@@ -1,0 +1,46 @@
+package com.example.lab2task4
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lab2task4.ui.theme.Lab2Task4Theme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        task4()
+        enableEdgeToEdge()
+        setContent {
+            Lab2Task4Theme {
+                Text("task4")
+            }
+        }
+    }
+}
+fun describeTeam(teamName: String?): String =
+    teamName?.let { "Team: $it (${it.length} characters)" }
+        ?: "Team not registered yet"
+
+fun task4() {
+    val nickname: String? = null
+    val fullName: String = "abdullah alqahtani"
+
+    println("Nickname length: ${nickname?.length}")
+    println("Full name length: ${fullName.length}")
+
+    println(nickname ?: "no nickname set")
+
+    println(describeTeam("Team Falcon"))
+    println(describeTeam(null))
+    //println(nickname!!.length)
+
+}
+
