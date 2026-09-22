@@ -1,0 +1,154 @@
+package com.example.lab2task6
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.lab2task6.ui.theme.AndroidGreen
+import com.example.lab2task6.ui.theme.Navy
+import com.example.lab2task6.ui.theme.ScreenBackground
+
+class MainActivity : ComponentActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enableEdgeToEdge()
+
+        setContent {
+            WelcomeScreen()
+        }
+    }
+}
+
+@Composable
+fun WelcomeBadge() {
+    Surface(
+        color = AndroidGreen,
+        shape = RoundedCornerShape(50)
+    ) {
+        Text(
+            text = "Built with Jetpack Compose",
+            modifier = Modifier.padding(
+                horizontal = 14.dp,
+                vertical = 8.dp
+            ),
+            fontSize = 12.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Navy
+        )
+    }
+}
+
+@Composable
+fun WelcomeScreen(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(ScreenBackground)
+    ) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Navy)
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = 16.dp
+                )
+        ) {
+            Text(
+                text = "CSC 402 Lab 2",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Text(
+                text = "Task 6 - My First Screen",
+                color = Color.White.copy(alpha = 0.75f),
+                fontSize = 12.sp
+            )
+        }
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                Box(
+                    modifier = Modifier
+                        .size(60.dp)
+                        .clip(CircleShape)
+                        .background(Navy),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "JU",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Text(
+                    text = "Hello, Jubail!",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Navy
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = "Welcome to CSC 402.",
+                    color = Color.Gray
+                )
+
+                Text(
+                    text = "This is your first Jetpack Compose screen.",
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                WelcomeBadge()
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun WelcomeScreenPreview() {
+    WelcomeScreen()
+}
