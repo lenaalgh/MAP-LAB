@@ -1,0 +1,133 @@
+package com.example.lab2task7
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.lab2task7.ui.theme.AndroidGreen
+import com.example.lab2task7.ui.theme.Navy
+import com.example.lab2task7.ui.theme.ScreenBackground
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            StudentIdScreen()
+
+
+        }
+    }
+}
+
+@Composable
+fun StatItem(value: String, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(value, fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Navy)
+        Text(label, fontSize = 10.sp, color = Color.Gray)
+    }
+}
+
+@Composable
+fun StudentChip(text: String, green: Boolean) {
+    Surface(
+        color = if (green) AndroidGreen.copy(alpha = 0.18f) else Color.LightGray.copy(alpha = 0.65f),
+        shape = RoundedCornerShape(50)
+    ) {
+        Text(
+            text,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            fontSize = 9.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = if (green) Color(0xFF167A45) else Color.DarkGray
+        )
+    }
+}
+
+@Composable
+fun StudentIdScreen(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(ScreenBackground)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Navy)
+                .padding(16.dp)
+        ) {
+            Text("Student ID", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text("Task 7 - Row & Column", color = Color.White.copy(alpha = 0.75f), fontSize = 11.sp)
+        }
+        Box(Modifier.fillMaxWidth().height(3.dp).background(AndroidGreen))
+
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 12.dp),
+            shape = RoundedCornerShape(14.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.size(48.dp).clip(androidx.compose.foundation.shape.CircleShape).background(Navy),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("LA", color = Color.White, fontWeight = FontWeight.Bold)
+                }
+                Spacer(Modifier.width(12.dp))
+                Column(modifier = Modifier.weight(1f)) {
+                    Text("lena alghamdi", fontWeight = FontWeight.Bold, color = Navy)
+                    Text("Computer Science", fontSize = 11.sp, color = Color.Gray)
+                    Text("224001570", fontFamily = FontFamily.Monospace, fontSize = 10.sp, color = Color.Gray)
+                    Spacer(Modifier.height(5.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                        StudentChip("Level 4", green = true)
+                        StudentChip("CSHj", green = false)
+                    }
+                }
+            }
+        }
+
+        HorizontalDivider(modifier = Modifier.padding(horizontal = 20.dp), color = Color.LightGray)
+
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 10.dp),
+            shape = RoundedCornerShape(14.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                StatItem("4.58", "GPA")
+                StatItem("103", "Credits")
+                StatItem("Active", "Status")
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun StudentIdScreenPreview() {
+    StudentIdScreen()
+}
