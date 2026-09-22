@@ -1,0 +1,52 @@
+package com.example.lab2task3
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lab2task3.ui.theme.Lab2Task3Theme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        task3()
+        enableEdgeToEdge()
+        setContent {
+            Lab2Task3Theme {
+               Text("task3")
+            }
+        }
+    }
+}
+fun letterGrade(mark: Int): String = when {
+    mark !in 0..100 -> "Invalid"
+    mark >= 95 -> "A"
+    mark >= 90 -> "A-"
+    mark >= 85 -> "B+"
+    mark >= 80 -> "B"
+    mark >= 78 -> "B-"
+    mark >= 75 -> "C+"
+    mark >= 70 -> "C"
+    mark >= 65 -> "C-"
+    mark >= 60 -> "D"
+    else -> "F"
+}
+
+fun status(mark: Int): String =
+    if (mark >= 60) "Pass" else "Fail"
+
+fun task3() {
+    val marks = listOf(97, 88, 74, 61, 45, 130)
+
+    for (mark in marks) {
+        println("Mark %-3d  %-7s  (%s)".format(mark, letterGrade(mark), status(mark)))
+    }
+}
+
