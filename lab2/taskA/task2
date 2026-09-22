@@ -1,0 +1,51 @@
+package com.example.lab2t2
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lab2t2.ui.theme.Lab2T2Theme
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        task2()
+        enableEdgeToEdge()
+        setContent {
+            Lab2T2Theme {
+                Text("task2")
+            }
+        }
+    }
+}
+fun greetStudent(name: String, course: String = "CSC 402"): String =
+    "Welcome to $course, $name!"
+
+fun finalMark(quizzes: Double, project: Double, finalExam: Double): Double =
+    quizzes * 0.10 + project * 0.70 + finalExam * 0.20
+
+fun printBanner(title: String, width: Int = 40) {
+
+    println(title)
+
+}
+
+fun task2() {
+    printBanner("lab 2 task 2")
+    println(greetStudent("lena"))
+    println(greetStudent("lena", "CSC 311"))
+
+    val positional = finalMark(80.0, 90.0, 70.0)
+    val named = finalMark(finalExam = 70.0, quizzes = 80.0, project = 90.0)
+
+    println("Positional: $positional")
+    println("Named:      $named")
+}
+
