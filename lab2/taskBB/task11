@@ -1,0 +1,140 @@
+package com.example.lab2task11
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lab2task011.ui.theme.AndroidGreen
+import com.example.lab2task011.ui.theme.Navy
+import com.example.lab2task011.ui.theme.ScreenBackground
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent { TeamTaskTracker()
+
+        }
+    }
+}
+
+data class TeamTask(
+    val id: Int,
+    val title: String,
+    val owner: String,
+    val isDone: Boolean = false
+)
+
+@Composable
+fun TaskRow(task: TeamTask, onToggle: () -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Checkbox(checked = task.isDone, onCheckedChange = { onToggle() })
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    task.title,
+                    fontWeight = FontWeight.SemiBold,
+                    color = if (task.isDone) Color.Gray else Navy,
+                    textDecoration = if (task.isDone) TextDecoration.LineThrough else TextDecoration.None
+                )
+                Text(task.owner, fontSize = 10.sp, color = Color.Gray)
+            }
+        }
+    }
+}
+
+@Composable
+fun TeamTaskTracker() {
+    val tasks = remember {
+        mutableStateListOf(
+            TeamTask(1, "Create GitHub repository", "Fatmah", true),
+            TeamTask(2, "Write project proposal", "Omar", true),
+            TeamTask(3, "Design the login screen", "Noura", false),
+            TeamTask(4, "Set up Android Studio", "Yousef", false)
+        )
+    }
+
+    val doneCount = tasks.count { it.isDone }
+    val openCount = tasks.count { !it.isDone }
+    val totalCount = tasks.size
+
+    Column(Modifier.fillMaxSize().background(ScreenBackground)) {
+        Column(Modifier.fillMaxWidth().background(Navy).padding(16.dp)) {
+            Text("Team Task Tracker", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text("Task 11 - Challenge", color = Color.White.copy(alpha = 0.75f), fontSize = 11.sp)
+        }
+        Box(Modifier.fillMaxWidth().height(3.dp).background(AndroidGreen))
+
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 10.dp)
+                .clip(RoundedCornerShape(12.dp)).background(Navy).padding(vertical = 12.dp),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            SummaryItem(doneCount, "Done")
+            SummaryItem(openCount, "Open")
+            SummaryItem(totalCount, "Total")
+        }
+
+        LazyColumn(
+            modifier = Modifier.weight(1f),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            items(tasks, key = { it.id }) { task ->
+                TaskRow(task = task, onToggle = {
+                    val index = tasks.indexOfFirst { it.id == task.id }
+                    if (index >= 0) tasks[index] = task.copy(isDone = !task.isDone)
+                })
+            }
+        }
+
+        Button(
+            onClick = {
+                val nextId = (tasks.maxOfOrNull { it.id } ?: 0) + 1
+                tasks.add(TeamTask(nextId, "New task", "YOUR NAME"))
+            },
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = AndroidGreen, contentColor = Navy)
+        ) {
+            Text("+  Add task", fontWeight = FontWeight.Bold)
+        }
+    }
+}
+
+@Composable
+fun SummaryItem(value: Int, label: String) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text("$"+"value", color = AndroidGreen, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        Text(label, color = Color.White.copy(alpha = 0.75f), fontSize = 10.sp)
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun TeamTaskTrackerPreview() {
+    TeamTaskTracker()
+}
+
+
