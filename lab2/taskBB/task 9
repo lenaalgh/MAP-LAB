@@ -1,0 +1,100 @@
+package com.example.lab2task9
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.lab2task9.ui.theme.AndroidGreen
+import com.example.lab2task9.ui.theme.Navy
+import com.example.lab2task9.ui.theme.ScreenBackground
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent { GreetingCard()
+
+            }
+        }
+    }
+
+
+
+
+@Composable
+fun GreetingCard() {
+    var name by remember { mutableStateOf("") }
+    var submittedName by remember { mutableStateOf("") }
+
+    Column(
+        modifier = Modifier.fillMaxSize().background(ScreenBackground)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().background(Navy).padding(16.dp)
+        ) {
+            Text("Greeting", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text("Task 9 - Text input", color = Color.White.copy(alpha = 0.75f), fontSize = 11.sp)
+        }
+        Box(Modifier.fillMaxWidth().height(3.dp).background(AndroidGreen))
+
+        Column(Modifier.fillMaxWidth().padding(20.dp)) {
+            OutlinedTextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Your name") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Spacer(Modifier.height(12.dp))
+            Button(
+                onClick = { submittedName = name.trim() },
+                enabled = name.isNotBlank(),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Show greeting")
+            }
+            Spacer(Modifier.height(18.dp))
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(20.dp)) {
+                    if (submittedName.isBlank()) {
+                        Text("Your greeting will appear here.", color = Color.Gray)
+                    } else {
+                        Text("Marhaba, $submittedName!", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Navy)
+                        Spacer(Modifier.height(8.dp))
+                        Text("Your name has ${submittedName.length} letters.", color = Color.Gray)
+                        Spacer(Modifier.height(12.dp))
+                        Surface(color = AndroidGreen, shape = RoundedCornerShape(50)) {
+                            Text(
+                                "CSC 402 - Lab 2",
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
+                                color = Navy,
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 12.sp
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingCardPreview() {
+    GreetingCard()
+}
